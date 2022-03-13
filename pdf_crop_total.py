@@ -68,7 +68,6 @@ elif crop_type == 1:
     write_tmp.write(outstream_tmp)
     outstream_tmp.close()
     
-    # images = convert_from_path("./source/" + PDF_Name)
     images = convert_from_path("tmp.pdf")
 
     print("Finish Converting")
