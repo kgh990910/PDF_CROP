@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from pdf2image import convert_from_path
 from PyPDF2 import PdfFileReader, PdfFileWriter
+import os
 
 coordi_mouse = list()
 
@@ -59,9 +60,16 @@ if crop_type == 0:
         coord_y[2 * i + 1] = float(input(f"page{i} UpperRight Y coordinate : "))
 
 elif crop_type == 1:
-    print("for using mouse, convert pdf to image")
-    print("if pdf have many pages, this job is long")
-    images = convert_from_path("./source/" + PDF_Name)
+    print("for using mouse, convert pdf2image")
+    write_tmp = PdfFileWriter()
+    write_tmp.addPage(page)
+    print("Generate tmp.pdf for converting pdf2image")
+    outstream_tmp = open("tmp.pdf", "wb")
+    write_tmp.write(outstream_tmp)
+    outstream_tmp.close()
+    
+    # images = convert_from_path("./source/" + PDF_Name)
+    images = convert_from_path("tmp.pdf")
 
     print("Finish Converting")
     numpy_image = np.array(images[0])
@@ -117,4 +125,7 @@ for i in range(0, reader[0].numPages):
 outstream = open(Out_Name + ".pdf", 'wb')
 writer.write(outstream)
 outstream.close()
+if os.path.exists("tmp.pdf"):
+    os.remove("tmp.pdf")
+    print("remove tmp.pdf")
 print("Finish")
